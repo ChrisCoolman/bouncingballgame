@@ -1,6 +1,6 @@
-let ball, box;
+let ball, ball2, box;
 let collisions;
-let ball1size = document.getElementById("ball1size");
+let ballsize = document.getElementById("ballsize");
 
 let colors = ["Brown", "Coral", "CornflowerBlue", "Crimson", "DarkOrange", "DarkOrchid", "DeepPink", "Gold", "GreenYellow", "MediumBlue", "OrangeRed", "SpringGreen"];
 document.body.style.backgroundColor = colors[(Math.floor(Math.random() * colors.length))];
@@ -23,6 +23,16 @@ function setup() {
   collisions = 0;
   ball.direction = random(-100, 100);
 
+  ball2 = new Sprite(250, 100);
+  ball2.width = 10;
+  ball2.height = 10;
+  ball2.speed = 10;
+  ball2.collider = 'dynamic';
+  ball2.bounciness = 1;
+  ball2.friction = 0;
+  ball2.strokeWeight = 0;
+  ball2.direction = random(-100, 100);
+
   box = new Sprite(250, 250, 490, 490, 's');
   box.shape = 'chain';
 
@@ -33,7 +43,7 @@ function draw() {
   if (mouse.pressing()) {
     background(0, 0, 0, 5);
     world.timeScale = 0.25;
-    world.gravity.y = 25;
+    //world.gravity.y = 25;
   } else {
     background(0, 0, 0, 15);
     world.timeScale = 1;
@@ -44,20 +54,56 @@ function draw() {
     ball.height += 1;
     hit.play();
   }
-  ball1size.innerHTML = "Ball 1 Size: " + Math.floor(ball.width);
-  //balcol.innerHTML = "Ball Collisions: " + collisions;
+  if (ball2.collides(box)) {
+    ball2.width += 1;
+    ball2.height += 1;
+    hit.play();
+  }
+  if (ball.collides(ball2)) {
+    ball.width -= 1;
+    ball.height -= 1;
+    collisions+=1;
+    //hit.play();
+  }
+  if (ball2.collides(ball)) {
+    ball.width -= 1;
+    ball.height -= 1;
+    collisions+=1;
+    //hit.play();
+  }
+  ballsize.innerHTML = "Ball 1 Size: " + Math.floor(ball.width);
+  ball2size.innerHTML = "Ball 2 Size: " + Math.floor(ball2.width);
+  balcol.innerHTML = "Ball Collisions: " + collisions;
 
   ball.speed = ball.width / 2;
   ball.rotation = 0;
 
+  ball2.speed = ball2.width / 2;
+  ball2.rotation = 0;
+
 
   if (ball.width > 175) {
-    ball.width = 174;
-    ball.height = 174;
+    ball.width = 5;
+    ball.height = 5;
+  }
+
+  if (ball2.width > 175) {
+    ball2.width = 5;
+    ball2.height = 5;
+  }
+
+  if (ball.width < 5) {
+    ball.width += 5;
+    ball.height += 5;
+  }
+
+  if (ball2.width < 5) {
+    ball2.width += 5;
+    ball2.height += 5;
   }
 }
 
-/*let ball1, ball2, ball3;
+/*let ball, ball2, ball3;
 let width = 400;
 let height = 400;
 let up, down, left, right;
@@ -86,9 +132,9 @@ function setup() {
   left.collider = 's';
   right.collider = 's';
 
-  ball1 = new Sprite(100, 200, 50);
-  ball1.collider = 'd';
-  ball1.bounciness = 2;
+  ball = new Sprite(100, 200, 50);
+  ball.collider = 'd';
+  ball.bounciness = 2;
 
   ball2 = new Sprite(200, 200, 50);
   ball2.collider = 'd';
@@ -98,7 +144,7 @@ function setup() {
   ball3.collider = 'd';
   ball3.bounciness = 2;
 
-  ball1.vel.x = random(-100, 100);
+  ball.vel.x = random(-100, 100);
   ball2.vel.x = random(-100, 100);
   ball3.vel.x = random(-100, 100);
 }
@@ -106,8 +152,8 @@ function setup() {
 function draw() {
   //background(220);
 
-  if (ball1.speed > maxSpeed) {
-    ball1.speed = maxSpeed;
+  if (ball.speed > maxSpeed) {
+    ball.speed = maxSpeed;
   }
 
 
@@ -132,5 +178,5 @@ function draw() {
 
 
 setInterval(() => {maxSpeed+=0.1;console.log(maxSpeed);}, 1000);
-//setInterval(() => {ball1.vel.x = random(-100, 100);ball2.vel.x = random(-100, 100);ball3.vel.x = random(-100, 100);}, 5000);
+//setInterval(() => {ball.vel.x = random(-100, 100);ball2.vel.x = random(-100, 100);ball3.vel.x = random(-100, 100);}, 5000);
 */
